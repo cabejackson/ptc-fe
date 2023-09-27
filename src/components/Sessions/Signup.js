@@ -1,62 +1,72 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Alert, Box, Button, Card, CardActions, CardContent, Container, Divider, FormControl, FormGroup, IconButton, Input, InputAdornment, InputLabel, FormHelperText, OutlinedInput, Typography } from "@mui/material";
+import { Alert, Box, Button, Card, CardActions, CardContent, Container, Divider, FormControl, FormGroup, FormHelperText, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-// import { RootState } from "../../store";
-// import { SignupUser, resetErrorState } from "./sessionSlice";
-// import { SignupUser } from "./sessionSlice";
+import { resetErrorState, signUpUser } from "./sessionSlice";
 
 
 function Signup() {
-  const emailRef = useRef()
-  const passwordRef = useRef()
-  const passwordConfirmationRef = useRef()
-  let errorMessages = [];
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const passwordConfirmationRef = useRef();
+  const errorMessages = useSelector((state) => state.session.errorMessages);
+
   const [errors, setErrors] = useState([])
   const [showPassword, setShowPassword] = useState(false);
   const loading = false;
   const navigate = useNavigate();
-//   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     emailRef?.current?.focus();
-    if (errorMessages.length > 0) {
+    if (errorMessages !== undefined) {
       setErrors(errorMessages);
-    //   dispatch(resetErrorState());
+      dispatch(resetErrorState());
     }
   }, [])
 
   async function handleSubmit(event) {
     event.preventDefault();
     setErrors([]);
-    if (emailRef?.current === undefined 
-        || emailRef.current.value === "" 
-        || passwordRef?.current === undefined 
-        || passwordRef.current.value === "" 
-        || passwordConfirmationRef?.current === undefined
-        || passwordConfirmationRef.current.value === "") {
+    if (emailRef?.current === undefined
+      || emailRef.current.value === ""
+      || passwordRef?.current === undefined
+      || passwordRef.current.value === ""
+      || passwordConfirmationRef?.current === undefined
+          || passwordConfirmationRef.current.value === "") {
       return setErrors(["Please fill out all fields"])
     }
-    if ( passwordRef.current.value !== passwordConfirmationRef.current.value) {
-        return setErrors(["Passwords do not match"])
+    if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
+      return setErrors(["Passwords do not match"])
     }
-    // const payload = {
-    //   email: emailRef.current.value,
-    //   password: passwordRef.current.value
-    // }
-    // const response = await dispatch(SignupUser(payload));
-    const response = ["oops something went wrong"]
+    const payload = {
+      email: emailRef.current.value,
+      password: passwordRef.current.value
+    }
+    const response = await dispatch(signUpUser(payload));
+
     console.log(response);
-    if (errorMessages.length === 0) {
+    if (errorMessages.length > 0) {
       navigate("/");
     } else {
       return setErrors(errorMessages);
     }
   }
 
-  const passwordConfirmationInput = <OutlinedInput id="password" type={showPassword ? 'text' : 'password'} inputRef={passwordRef} endAdornment={
+  const passwordInput = <OutlinedInput id="password" type={showPassword ? 'text' : 'password'} inputRef={passwordRef} endAdornment={
+    <InputAdornment position="end">
+      <IconButton
+        aria-label="toggle password visibility"
+        onClick={() => setShowPassword(!showPassword)}
+        onMouseDown={() => setShowPassword(!showPassword)}
+        edge="end">
+          {showPassword ? <Visibility /> : <VisibilityOff />}
+      </IconButton>
+    </InputAdornment>
+  } />;
+
+  const passwordConfirmationInput = <OutlinedInput id="password-confirmation" type={showPassword ? 'text' : 'password'} inputRef={passwordConfirmationRef} endAdornment={
     <InputAdornment position="end">
       <IconButton
         aria-label="toggle password visibility"
@@ -75,7 +85,7 @@ function Signup() {
           <CardContent>
             <Container maxWidth="sm">
               <Typography variant="h2" color="text.primary" gutterBottom>
-                Signup
+                Sign Up
               </Typography>
               {errors.length > 0 ?
                 <Alert severity="error" aria-live="assertive">
@@ -97,12 +107,12 @@ function Signup() {
                 <FormGroup row={true} id="password-group" sx={{marginTop: "1em"}}>
                   <FormControl fullWidth>
                     <InputLabel required htmlFor="password" id="password-label">Password</InputLabel>
-                    {passwordConfirmationInput}
+                    {passwordInput}
                   </FormControl>
                 </FormGroup>
                 <FormGroup row={true} id="password-confirmation-group" sx={{marginTop: "1em"}}>
                   <FormControl fullWidth>
-                    <InputLabel required htmlFor="password-confirmation" id="password--confirmation-label">Password Confirmation</InputLabel>
+                    <InputLabel required htmlFor="password-confirmation" id="password-confirmation-label">Password Confirmation</InputLabel>
                     {passwordConfirmationInput}
                   </FormControl>
                 </FormGroup>

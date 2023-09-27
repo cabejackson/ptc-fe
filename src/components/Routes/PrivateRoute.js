@@ -2,10 +2,14 @@
 
 // import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Navigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 
 function PrivateRoute({ children } : any) {
-    const accessToken = false;
-    const loading = false;
+    const accessToken = useSelector((state) => state.session.accessToken);
+    const loading = useSelector((state) => state.session.loading);
+    // const accessToken = false;
+    // const loading = false;
     // const navigate = useNavigate();
     const location = useLocation();
     const fromLocation = (location.state)?.from;

@@ -2,10 +2,10 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Alert, Box, Button, Card, CardActions, CardContent, Container, Divider, FormControl, FormGroup, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 // import { useDispatch, useSelector } from "react-redux";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 // import { RootState } from "../../store";
-// import { loginUser, resetErrorState } from "./sessionSlice";
+import { loginUser, resetErrorState } from "./sessionSlice";
 // import { loginUser } from "./sessionSlice";
 
 
@@ -17,13 +17,13 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const loading = false;
   const navigate = useNavigate();
-//   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     emailRef?.current?.focus();
     if (errorMessages.length > 0) {
       setErrors(errorMessages);
-    //   dispatch(resetErrorState());
+      dispatch(resetErrorState());
     }
   }, [])
 
@@ -36,12 +36,12 @@ function Login() {
       || passwordRef.current.value === "") {
       return setErrors(["Please fill out all fields"])
     }
-    // const payload = {
-    //   email: emailRef.current.value,
-    //   password: passwordRef.current.value
-    // }
-    // const response = await dispatch(loginUser(payload));
-    const response = ["oops something went wrong"]
+    const payload = {
+      email: emailRef.current.value,
+      password: passwordRef.current.value
+    }
+    const response = await dispatch(loginUser(payload));
+    // const response = ["oops something went wrong"]
     console.log(response);
     if (errorMessages.length === 0) {
       navigate("/");
