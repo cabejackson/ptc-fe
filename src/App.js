@@ -3,8 +3,11 @@ import './App.css';
 // import Cards from "./components/Cards/cards"
 // import { useEffect, useState } from 'react';
 // import {jsx as _jsx} from 'react/jsx-runtime';
-import { Route, Router, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route , Routes } from 'react-router-dom'
 import AppBar from './components/AppBar/AppBar';
+import PersistLogin from './components/Sessions/PersistLogin';
+import PrivateRoute from './components/Routes/PrivateRoute';
+import Dashboard from './components/Dashboard/Dashboard';
 
 // const API_URL = "http://localhost:3000/api/v1/cards";
 
