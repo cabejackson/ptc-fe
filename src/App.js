@@ -3,6 +3,7 @@ import './App.css';
 // import Cards from "./components/Cards/cards"
 // import { useEffect, useState } from 'react';
 // import {jsx as _jsx} from 'react/jsx-runtime';
+import { Route, Router, Routes } from 'react-router-dom'
 import AppBar from './components/AppBar/AppBar';
 
 // const API_URL = "http://localhost:3000/api/v1/cards";
@@ -27,11 +28,25 @@ function App() {
 
   return (
     <div className="App">
+      <Router>
+
       {/* <h1>hello world</h1> */}
       <header className='App-header'>
         <AppBar />
       </header>
       {/* <Cards cards={cards}/> */}
+      <main>
+        <Routes>
+          <Route element={ <PersistLogin />}>
+            <Route path="/" element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            } />
+          </Route>
+        </Routes>
+      </main>
+      </Router>
     </div>
   );
 }
