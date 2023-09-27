@@ -1,12 +1,9 @@
-import React from 'react'
+// import React from 'react'
 
-function 
-() {
+function UpdateProfile() {
   return (
-    <div>
-        
-    </div>
+    <div>UpdateProfile</div>
   )
 }
 
-export default 
+export default UpdateProfile

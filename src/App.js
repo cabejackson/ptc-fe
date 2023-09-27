@@ -7,7 +7,12 @@ import { BrowserRouter as Router, Route , Routes } from 'react-router-dom'
 import AppBar from './components/AppBar/AppBar';
 import PersistLogin from './components/Sessions/PersistLogin';
 import PrivateRoute from './components/Routes/PrivateRoute';
+import PublicOnlyRoute from './components/Routes/PublicOnlyRoute';
 import Dashboard from './components/Dashboard/Dashboard';
+import Signup from './components/Sessions/Signup';
+import Login from './components/Sessions/login';
+import Logout from './components/Sessions/Logout';
+import UpdateProfile from './components/Sessions/UpdateProfile';
 
 // const API_URL = "http://localhost:3000/api/v1/cards";
 
@@ -45,6 +50,26 @@ function App() {
               <PrivateRoute>
                 <Dashboard />
               </PrivateRoute>
+            } />
+            <Route path="/logout" element={
+              <PrivateRoute>
+                <Logout />
+              </PrivateRoute>
+            } />
+            <Route path="/update-profile" element={
+              <PrivateRoute>
+                <UpdateProfile />
+              </PrivateRoute>
+            } />
+            <Route path="/login" element={
+              <PublicOnlyRoute>
+                <Login />
+              </PublicOnlyRoute>
+            } />
+            <Route path="/signup" element={
+              <PublicOnlyRoute>
+                <Signup />
+              </PublicOnlyRoute>
             } />
           </Route>
         </Routes>
