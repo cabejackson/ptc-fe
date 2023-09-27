@@ -28,7 +28,9 @@ function App() {
   return (
     <div className="App">
       {/* <h1>hello world</h1> */}
-      <AppBar />
+      <header className='App-header'>
+        <AppBar />
+      </header>
       {/* <Cards cards={cards}/> */}
     </div>
   );
